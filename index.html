@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+            transition: width 0.3s, height 0.3s;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px;
+            font-weight: bold;
+            min-height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: min-height 0.3s;
+        }
+        .typewriter {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid;
+            animation: typing 2s steps(30, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>Element Converter</h1>
+        <div id="output"></div>
+        
+        <label for="list-elements">Enter elements for List separated by commas:</label>
+        <input type="text" id="list-elements" size="50">
+        <button onclick="showAsList()">List</button>
+        
+        <label for="tuple-elements">Enter elements for Tuple separated by commas:</label>
+        <input type="text" id="tuple-elements" size="50">
+        <button onclick="showAsTuple()">Tuple</button>
+        
+        <label for="set-elements">Enter elements for Set separated by commas:</label>
+        <input type="text" id="set-elements" size="50">
+        <button onclick="showAsSet()">Set</button>
+    </div>
+
+    <script>
+        function typeWriterEffect(text) {
+            const outputDiv = document.getElementById('output');
+            const containerDiv = document.getElementById('container');
+            outputDiv.innerHTML = '';
+            const typewriter = document.createElement('span');
+            typewriter.className = 'typewriter';
+            typewriter.textContent = text;
+            outputDiv.appendChild(typewriter);
+            containerDiv.style.width = 'auto';
+            containerDiv.style.height = 'auto';
+            outputDiv.style.minHeight = '40px';
+        }
+
+        function showAsList() {
+            const elements = document.getElementById('list-elements').value.split(',');
+            if (elements.length === 1 && elements[0] === '') {
+                alert('Please enter some elements.');
+            } else {
+                typeWriterEffect('List: ' + JSON.stringify(elements));
+            }
+        }
+
+        function showAsTuple() {
+            const elements = document.getElementById('tuple-elements').value.split(',');
+            if (elements.length === 1 && elements[0] === '') {
+                alert('Please enter some elements.');
+            } else {
+                typeWriterEffect('Tuple: (' + elements.join(', ') + ')');
+            }
+        }
+
+        function showAsSet() {
+            const elements = document.getElementById('set-elements').value.split(',');
+            if (elements.length === 1 && elements[0] === '') {
+                alert('Please enter some elements.');
+            } else {
+                const parsedElements = new Set();
+                for (const e of elements) {
+                    if (e === '1' && parsedElements.has('True')) continue;
+                    if (e === 'True' && parsedElements.has('1')) continue;
+                    if (e === '0' && parsedElements.has('False')) continue;
+                    if (e === 'False' && parsedElements.has('0')) continue;
+                    parsedElements.add(e);
+                }
+                typeWriterEffect('Set: ' + JSON.stringify(Array.from(parsedElements)));
+            }
+        }
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value === '') {
+                    document.getElementById('output').innerHTML = '';
+                    document.getElementById('container').style.width = '350px';
+                    document.getElementById('container').style.height = 'auto';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
